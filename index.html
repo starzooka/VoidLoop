@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>VoidLoop</title>
+  </head>
+  <body>
+  
+    <div id="wrapper">
+      <h1 class="neon-title" data-text="Voidloop">VOIDLOOP</h1>
+      
+      <div class="main-layout">
+        
+        <div class="controls-panel">
+            <h2 class="panel-header">SYSTEM CONTROLS</h2>
+            
+            <div class="control-group">
+                <span class="label">NAVIGATION</span>
+                <div class="keys-container">
+                    <div id="btn-up" class="key arrow">↑</div>
+                    
+                    <div class="key-row">
+                        <div id="btn-left" class="key arrow left">↑</div>
+                        <div id="btn-down" class="key arrow down">↑</div>
+                        <div id="btn-right" class="key arrow right">↑</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="control-group">
+                <span class="label">THRUST</span>
+                <div id="btn-dash" class="key space"></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="control-group">
+                <span class="label">AUDIO</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="btn-mute" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+        </div>
+
+        <div id="game-container"></div>
+
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
