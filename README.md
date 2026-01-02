@@ -9,7 +9,6 @@
 Built with **JavaScript**, **Phaser 3**, and **Vite**.
 
 ![Voidloop Gameplay Screenshot](./public/gameplay.png)
-*(Add a screenshot of your game here named gameplay.png inside the public folder)*
 
 ## 🎮 Play the Game
 ready to survive the void?
