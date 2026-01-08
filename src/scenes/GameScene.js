@@ -184,19 +184,21 @@ export default class GameScene extends Phaser.Scene {
 
   // --- STANDARD GAME LOGIC ---
 
+
+  //testing-keys
   setupDebugKeys() {
       this.input.keyboard.on('keydown', (event) => {
           if (!this.player || this.isGameOver) return;
           const x = this.player.x + 50;
           const y = this.player.y;
           switch(event.key) {
-              case '1': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.SHIELD, x, y); break;
-              case '2': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.PHANTOM, x, y); break;
-              case '3': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.MAGNET, x, y); break;
-              case '4': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.TIME_WARP, x, y); break;
-              case '5': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.EMP, x, y); break;
-              case '7': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.MULTIPLIER, x, y); break;
-              case 'l': case 'L': this.addScore(500); this.showFloatingText(x, y, "LEVEL UP"); break;
+              // case '1': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.SHIELD, x, y); break;
+              // case '2': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.PHANTOM, x, y); break;
+              // case '3': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.MAGNET, x, y); break;
+              // case '4': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.TIME_WARP, x, y); break;
+              // case '5': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.EMP, x, y); break;
+              // case '7': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.MULTIPLIER, x, y); break;
+              // case 'l': case 'L': this.addScore(500); this.showFloatingText(x, y, "LEVEL UP"); break;
               case 'g': case 'G': 
                   this.godMode = !this.godMode; 
                   this.debugText.setAlpha(this.godMode ? 1 : 0);
