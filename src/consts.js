@@ -22,18 +22,17 @@ export const CONSTS = {
   POWERUPS: {
     TYPE: {
       SHIELD: 'shield',
-      GHOST: 'ghost',
+      PHANTOM: 'phantom', // RENAMED from ghost
       MAGNET: 'magnet',
       TIME_WARP: 'time_warp',
       EMP: 'emp',
-      OVERDRIVE: 'overdrive',
       MULTIPLIER: 'multiplier'
+      // REMOVED: overdrive
     },
     DURATION: {
-      GHOST: 5000,
+      PHANTOM: 5000,
       MAGNET: 10000,
       TIME_WARP: 5000,
-      OVERDRIVE: 4000,
       MULTIPLIER: 10000
     }
   },
@@ -42,12 +41,12 @@ export const CONSTS = {
     NEON_PINK: 0xff3366,
     NEON_YELLOW: 0xffff00,
     WARNING_RED: 0xff0000,
+    
     PW_SHIELD: 0x00ffff, 
-    PW_GHOST: 0xffffff,  
+    PW_PHANTOM: 0xffffff, // RENAMED
     PW_MAGNET: 0x9d00ff, 
     PW_TIME: 0x00ff00,   
     PW_EMP: 0xff0000,    
-    PW_DRIVE: 0xff8800,  
     PW_MULT: 0xffd700    
   }
 };

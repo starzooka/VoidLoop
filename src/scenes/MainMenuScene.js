@@ -12,6 +12,16 @@ export default class MainMenuScene extends Phaser.Scene {
     const centerX = width * 0.5;
     const centerY = height * 0.5;
 
+    // --- UI CLEANUP ---
+    // Hide Pause Button in Menu (Start state)
+    const pauseBtn = document.getElementById('btn-pause-header');
+    if (pauseBtn) pauseBtn.style.display = 'none';
+
+    // Ensure Pause Menu Overlay is hidden
+    const pauseMenu = document.getElementById('pause-menu');
+    if (pauseMenu) pauseMenu.classList.add('hidden');
+
+    // --- VISUALS ---
     // Title with Flicker Effect
     const title = this.add.text(centerX, centerY - 100, "VOIDLOOP", {
       fontFamily: '"Press Start 2P", monospace',
@@ -36,8 +46,8 @@ export default class MainMenuScene extends Phaser.Scene {
       color: "#ff00de",
     }).setOrigin(0.5);
 
-    // Start Prompt
-    const startText = this.add.text(centerX, centerY + 100, "CLICK TO START", {
+    // Start Prompt Text
+    const startText = this.add.text(centerX, centerY + 100, "PRESS ANY BUTTON", {
       fontFamily: '"Press Start 2P", monospace',
       fontSize: "20px",
       color: "#ffffff",
@@ -49,9 +59,20 @@ export default class MainMenuScene extends Phaser.Scene {
       duration: 800, yoyo: true, repeat: -1
     });
 
-    // Interaction to Start
-    this.input.on('pointerdown', () => {
-       this.scene.start('game');
+    // --- INPUTS (Press Any Button Logic) ---
+    
+    // 1. Mouse / Touch Interaction
+    this.input.once('pointerdown', () => {
+       this.startGame();
     });
+
+    // 2. Keyboard Interaction (Any Key)
+    this.input.keyboard.once('keydown', () => {
+        this.startGame();
+    });
+  }
+
+  startGame() {
+      this.scene.start('game');
   }
 }

@@ -207,7 +207,11 @@ export default class EnemyManager {
     this.scene.cameras.main.flash(200, 255, 0, 0);
     this.scene.cameras.main.shake(300, 0.02);
     this.scene.sound.play("explode", { volume: 0.6, rate: 0.5 }); 
-    this.enemies.getChildren().forEach(enemy => this.destroyEnemy(enemy));
+
+    // FIX: Create a copy of the array using spread syntax [...] 
+    // This ensures we iterate over a static list while destroying the original objects.
+    const targets = [...this.enemies.getChildren()];
+    targets.forEach(enemy => this.destroyEnemy(enemy));
   }
 
   setTimeWarp(active) {

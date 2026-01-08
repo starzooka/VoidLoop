@@ -25,11 +25,22 @@ export default class GameScene extends Phaser.Scene {
     const { width, height } = this.scale; // DYNAMIC CENTER
     this.cameras.main.fadeIn(300);
 
+    // --- UI SETUP ---
+    // Show Pause Button when game starts
+    const pauseBtn = document.getElementById('btn-pause-header');
+    if (pauseBtn) pauseBtn.style.display = 'flex';
+
+    // Ensure Pause Menu is Hidden on restart
+    const pauseMenu = document.getElementById('pause-menu');
+    if (pauseMenu) pauseMenu.classList.add('hidden');
+
     // --- AUDIO ---
     this.music = this.sound.add("music", { volume: 0.5, loop: true });
     if (!this.sound.locked) this.music.play();
     else this.sound.once(Phaser.Sound.Events.UNLOCKED, () => this.music.play());
-    this.setupMuteToggle();
+    
+    // Setup the new DOM-based controls
+    this.setupDOMControls();
 
     // --- TEXTURES ---
     this.createBaseTextures(); 
@@ -62,11 +73,7 @@ export default class GameScene extends Phaser.Scene {
         fontFamily: '"Press Start 2P"', fontSize: "24px", align: "center", lineSpacing: 10, color: "#ffffff",
     }).setOrigin(0.5).setDepth(20);
     
-    // Position Shift Hint relative to screen
-    this.add.text(width - 20, height - 20, "SHIFT: BRAKE", {
-        fontFamily: '"Press Start 2P"', fontSize: "10px", color: "#555"
-    }).setOrigin(1, 1);
-    
+    // Debug Hint
     this.debugText = this.add.text(width - 20, 16, "DEBUG ON", { 
         fontFamily: '"Press Start 2P"', fontSize: "10px", color: "#00ff00" 
     }).setOrigin(1, 0).setAlpha(0);
@@ -86,6 +93,8 @@ export default class GameScene extends Phaser.Scene {
     }
     
     if (Phaser.Input.Keyboard.JustDown(this.escKey)) this.togglePause();
+    
+    // Stop update loop if paused (Logic halt)
     if (this.isPaused) return;
 
     if (!this.cursors) return;
@@ -104,6 +113,77 @@ export default class GameScene extends Phaser.Scene {
     if (this.itemManager) this.itemManager.update(); 
   }
 
+  // --- NEW DOM CONTROLS ---
+  setupDOMControls() {
+      // 1. Header Pause Button
+      const headerPauseBtn = document.getElementById('btn-pause-header');
+      if (headerPauseBtn) {
+          headerPauseBtn.onclick = (e) => {
+              e.target.blur();
+              this.togglePause();
+          };
+      }
+
+      // 2. Pause Menu Resume Button
+      const resumeBtn = document.getElementById('btn-resume');
+      if (resumeBtn) {
+          resumeBtn.onclick = () => this.togglePause();
+      }
+
+      // 3. Pause Menu Restart Button (NEW)
+      const restartBtn = document.getElementById('btn-restart');
+      if (restartBtn) {
+          restartBtn.onclick = () => {
+              // Ensure we aren't paused physically when restarting logic kicks in
+              // But strictly speaking, scene.restart() wipes the slate.
+              // We just need to make sure the menu closes.
+              const pauseMenu = document.getElementById('pause-menu');
+              if (pauseMenu) pauseMenu.classList.add('hidden');
+              this.scene.restart();
+          };
+      }
+
+      // 4. Audio - Volume Slider
+      const volSlider = document.getElementById('volume-slider');
+      if (volSlider) {
+          volSlider.value = this.sound.volume; // Sync start value
+          volSlider.oninput = (e) => {
+              this.sound.volume = parseFloat(e.target.value);
+          };
+      }
+
+      // 5. Audio - Mute Toggle
+      const muteCheckbox = document.getElementById('btn-mute');
+      if (muteCheckbox) {
+          muteCheckbox.checked = !this.sound.mute;
+          muteCheckbox.onchange = (e) => {
+              this.sound.mute = !e.target.checked;
+          };
+      }
+  }
+
+  togglePause() {
+    this.isPaused = !this.isPaused;
+    const pauseMenu = document.getElementById('pause-menu');
+
+    if (this.isPaused) {
+      this.physics.pause();
+      if (this.music) this.music.pause();
+      
+      // Show HTML Overlay
+      if (pauseMenu) pauseMenu.classList.remove('hidden');
+      
+    } else {
+      this.physics.resume();
+      if (this.music) this.music.resume();
+      
+      // Hide HTML Overlay
+      if (pauseMenu) pauseMenu.classList.add('hidden');
+    }
+  }
+
+  // --- STANDARD GAME LOGIC ---
+
   setupDebugKeys() {
       this.input.keyboard.on('keydown', (event) => {
           if (!this.player || this.isGameOver) return;
@@ -111,11 +191,10 @@ export default class GameScene extends Phaser.Scene {
           const y = this.player.y;
           switch(event.key) {
               case '1': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.SHIELD, x, y); break;
-              case '2': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.GHOST, x, y); break;
+              case '2': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.PHANTOM, x, y); break;
               case '3': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.MAGNET, x, y); break;
               case '4': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.TIME_WARP, x, y); break;
               case '5': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.EMP, x, y); break;
-              case '6': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.OVERDRIVE, x, y); break;
               case '7': this.itemManager.spawnSpecificPowerup(CONSTS.POWERUPS.TYPE.MULTIPLIER, x, y); break;
               case 'l': case 'L': this.addScore(500); this.showFloatingText(x, y, "LEVEL UP"); break;
               case 'g': case 'G': 
@@ -174,7 +253,12 @@ export default class GameScene extends Phaser.Scene {
     emitter.explode(60);
 
     this.player.die();
-    this.centerText.setText(`GAME OVER\nSCORE: ${this.score}\nBEST: ${this.highScore}\n\nTAP TO RESTART`);
+
+    // HIDE PAUSE BUTTON ON DEATH
+    const pauseBtn = document.getElementById('btn-pause-header');
+    if (pauseBtn) pauseBtn.style.display = 'none';
+
+    this.centerText.setText(`GAME OVER\nSCORE: ${this.score}\nBEST: ${this.highScore}\n\nTAP R TO RESTART`);
   }
 
   createBaseTextures() {
@@ -215,21 +299,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   setupMuteToggle() {
-    const muteCheckbox = document.getElementById('btn-mute');
-    if (muteCheckbox) {
-        muteCheckbox.checked = !this.sound.mute;
-        const toggleHandler = (e) => { 
-            e.stopPropagation(); 
-            this.sound.mute = !e.target.checked; 
-            e.target.blur(); 
-        };
-        const newEl = muteCheckbox.cloneNode(true);
-        if(muteCheckbox.parentNode) {
-            muteCheckbox.parentNode.replaceChild(newEl, muteCheckbox);
-            newEl.addEventListener('change', toggleHandler);
-            newEl.addEventListener('keydown', (e) => e.preventDefault());
-        }
-    }
+      // Intentionally empty or kept for legacy mobile controls if restored.
+      // Logic moved to setupDOMControls for the pause menu.
   }
 
   showFloatingText(x, y, message) {
@@ -237,18 +308,5 @@ export default class GameScene extends Phaser.Scene {
         fontSize: '16px', fontFamily: '"Press Start 2P"', color: '#ffff00', stroke: '#000000', strokeThickness: 2
     }).setOrigin(0.5);
     this.tweens.add({ targets: txt, y: txt.y - 50, alpha: 0, duration: 800, onComplete: () => txt.destroy() });
-  }
-
-  togglePause() {
-    this.isPaused = !this.isPaused;
-    if (this.isPaused) {
-      this.physics.pause();
-      if (this.music) this.music.pause();
-      this.centerText.setText("PAUSED\nESC TO RESUME");
-    } else {
-      this.physics.resume();
-      if (this.music) this.music.resume();
-      this.centerText.setText("");
-    }
   }
 }

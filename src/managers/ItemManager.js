@@ -33,11 +33,10 @@ export default class ItemManager {
         }
     };
     createBox("pw_shield", CONSTS.COLORS.PW_SHIELD);
-    createBox("pw_ghost", CONSTS.COLORS.PW_GHOST);
+    createBox("pw_phantom", CONSTS.COLORS.PW_PHANTOM);
     createBox("pw_magnet", CONSTS.COLORS.PW_MAGNET);
     createBox("pw_time", CONSTS.COLORS.PW_TIME);
     createBox("pw_emp", CONSTS.COLORS.PW_EMP);
-    createBox("pw_drive", CONSTS.COLORS.PW_DRIVE);
     createBox("pw_mult", CONSTS.COLORS.PW_MULT);
     g.destroy();
   }
@@ -65,11 +64,10 @@ export default class ItemManager {
     let texture = "";
     switch(type) {
         case CONSTS.POWERUPS.TYPE.SHIELD: texture = "pw_shield"; break;
-        case CONSTS.POWERUPS.TYPE.GHOST: texture = "pw_ghost"; break;
+        case CONSTS.POWERUPS.TYPE.PHANTOM: texture = "pw_phantom"; break;
         case CONSTS.POWERUPS.TYPE.MAGNET: texture = "pw_magnet"; break;
         case CONSTS.POWERUPS.TYPE.TIME_WARP: texture = "pw_time"; break;
         case CONSTS.POWERUPS.TYPE.EMP: texture = "pw_emp"; break;
-        case CONSTS.POWERUPS.TYPE.OVERDRIVE: texture = "pw_drive"; break;
         case CONSTS.POWERUPS.TYPE.MULTIPLIER: texture = "pw_mult"; break;
     }
     const pw = this.powerups.create(x, y, texture);
@@ -106,17 +104,13 @@ export default class ItemManager {
             player.activateShield();
             this.scene.showFloatingText(player.x, player.y, "SHIELD!");
             break;
-        case CONSTS.POWERUPS.TYPE.GHOST:
-            player.activateGhost(CONSTS.POWERUPS.DURATION.GHOST);
-            this.scene.showFloatingText(player.x, player.y, "GHOST!");
+        case CONSTS.POWERUPS.TYPE.PHANTOM:
+            player.activatePhantom(CONSTS.POWERUPS.DURATION.PHANTOM);
+            this.scene.showFloatingText(player.x, player.y, "PHANTOM!");
             break;
         case CONSTS.POWERUPS.TYPE.MAGNET:
             player.activateMagnet(CONSTS.POWERUPS.DURATION.MAGNET);
             this.scene.showFloatingText(player.x, player.y, "MAGNET!");
-            break;
-        case CONSTS.POWERUPS.TYPE.OVERDRIVE:
-            player.activateOverdrive(CONSTS.POWERUPS.DURATION.OVERDRIVE);
-            this.scene.showFloatingText(player.x, player.y, "OVERDRIVE!");
             break;
         case CONSTS.POWERUPS.TYPE.EMP:
             this.scene.enemyManager.triggerEMP();

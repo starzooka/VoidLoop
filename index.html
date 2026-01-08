@@ -16,48 +16,111 @@
       <p>Please access via a larger resolution.</p>
     </div>
 
-    <div id="wrapper">
-      <h1 class="neon-title" data-text="Voidloop">VOIDLOOP</h1>
-      
-      <div class="main-layout">
-        
-        <div class="controls-panel">
-            <h2 class="panel-header">SYSTEM CONTROLS</h2>
+    <div id="pause-menu" class="hidden">
+        <div class="pause-container">
             
-            <div class="control-group">
-                <span class="label">NAVIGATION</span>
-                <div class="keys-container">
-                    <div id="btn-up" class="key arrow">↑</div>
+            <h1 class="pause-title">SYSTEM HALTED</h1>
+            
+            <button id="btn-resume" class="neon-btn">RESUME OPERATION</button>
+            <button id="btn-restart" class="neon-btn" style="border-color: #ff3366; color: #ff3366; box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);">RESTART SYSTEM</button>
+
+            <div class="pause-layout">
+                
+                <div class="panel left-panel">
+                    <h2 class="panel-heading">SYSTEM CONFIG</h2>
                     
-                    <div class="key-row">
-                        <div id="btn-left" class="key arrow left">↑</div>
-                        <div id="btn-down" class="key arrow down">↑</div>
-                        <div id="btn-right" class="key arrow right">↑</div>
+                    <div class="config-group">
+                        <div class="audio-row">
+                            <span>MASTER VOL</span>
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
+                        </div>
+                        <div class="audio-row">
+                            <span>AUDIO MUTE</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="btn-mute">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="controls-list">
+                        <p><span>WASD / ARROWS</span> <span>MOVE</span></p>
+                        <p><span>SPACE</span> <span>DASH</span></p>
+                        <p><span>SHIFT</span> <span>BRAKE</span></p>
+                        <p><span>ESC</span> <span>PAUSE</span></p>
                     </div>
                 </div>
+
+                <div class="panel right-panel">
+                    <h2 class="panel-heading">DATABASE</h2>
+                    
+                    <div class="scoring-info">
+                        <div class="score-tag">SURVIVAL: <span class="highlight-yellow">+5/sec</span></div>
+                        <div class="score-tag flex-center">
+                            ORBS: 
+                            <div class="mini-orb"></div>
+                            <span class="highlight-yellow">+50</span>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="powerup-grid">
+                        
+                        <div class="powerup-item" style="--glow: #00ffff;">
+                            <div class="p-icon" style="border-color: #00ffff; background: rgba(0, 255, 255, 0.2);"></div>
+                            <span class="p-name" style="color: #00ffff;">SHIELD</span>
+                            <div class="tooltip">Blocks one enemy hit. Prevents death.</div>
+                        </div>
+
+                        <div class="powerup-item" style="--glow: #ffffff;">
+                            <div class="p-icon" style="border-color: #ffffff; background: rgba(255, 255, 255, 0.2);"></div>
+                            <span class="p-name" style="color: #ffffff;">PHANTOM</span>
+                            <div class="tooltip">Become invincible and pass through enemies for 5s.</div>
+                        </div>
+
+                        <div class="powerup-item" style="--glow: #9d00ff;">
+                            <div class="p-icon" style="border-color: #9d00ff; background: rgba(157, 0, 255, 0.2);"></div>
+                            <span class="p-name" style="color: #9d00ff;">MAGNET</span>
+                            <div class="tooltip">Automatically pulls all Orbs towards you.</div>
+                        </div>
+
+                        <div class="powerup-item" style="--glow: #00ff00;">
+                            <div class="p-icon" style="border-color: #00ff00; background: rgba(0, 255, 0, 0.2);"></div>
+                            <span class="p-name" style="color: #00ff00;">TIME WARP</span>
+                            <div class="tooltip">Slows all enemies down significantly.</div>
+                        </div>
+
+                        <div class="powerup-item" style="--glow: #ff0000;">
+                            <div class="p-icon" style="border-color: #ff0000; background: rgba(255, 0, 0, 0.2);"></div>
+                            <span class="p-name" style="color: #ff0000;">EMP</span>
+                            <div class="tooltip">Instant shockwave. Destroys all enemies on screen.</div>
+                        </div>
+
+                        <div class="powerup-item" style="--glow: #ffd700;">
+                            <div class="p-icon" style="border-color: #ffd700; background: rgba(255, 215, 0, 0.2);"></div>
+                            <span class="p-name" style="color: #ffd700;">2X SCORE</span>
+                            <div class="tooltip">Doubles score from survival and orbs for 10s.</div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-
-            <div class="divider"></div>
-
-            <div class="control-group">
-                <span class="label">THRUST</span>
-                <div id="btn-dash" class="key space"></div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="control-group">
-                <span class="label">AUDIO</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="btn-mute" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-
         </div>
+    </div>
 
+    <div id="wrapper">
+      <div id="header-bar">
+          <div class="header-spacer"></div>
+          <h1 class="neon-title" data-text="Voidloop">VOIDLOOP</h1>
+          <button id="btn-pause-header" class="pause-icon-btn">||</button>
+      </div>
+      
+      <div class="main-layout">
         <div id="game-container"></div>
-
       </div>
     </div>
 
